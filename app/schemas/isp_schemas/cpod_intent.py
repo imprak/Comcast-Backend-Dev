@@ -1,21 +1,26 @@
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, UUID4
 
 """
 ex:
-{
-    "cpodIntent": {
-        "cpodIntentName": "9 digit ISP name",
-        "refSiteIntentName": "9 digit ISP Name",
-        "refHubName": "GAL1",
-        "refPpodIntentNames": "9 digit ISP Name",
-    },
+req = {
+    "cpodIntentName": "9 digit ISP name",
+    "refSiteIntentName": "9 digit ISP Name",
+    "refSiteIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
     "leafUplink": {
         "leafA": {
             "lag": {
-                "ipv4": {"local": "", "remote": "", "subnet": ""},
-                "ipv6": {"local": "", "remote": "", "subnet": ""},
+                "ipv4": {
+                    "local": "10.10.10.10",
+                    "remote": "10.10.10.10",
+                    "subnet": "10.10.10.10",
+                },
+                "ipv6": {
+                    "local": "10.10.10.10.10.10",
+                    "remote": "10.10.10.10.10.10",
+                    "subnet": "10.10.10.10.10.10",
+                },
             },
             "ethernetInterfaces": [
                 {"localInterface": "string", "remoteInterface": "string"}
@@ -24,11 +29,64 @@ ex:
         },
         "leafB": {
             "lag": {
-                "ipv4": {"local": "", "remote": "", "subnet": ""},
-                "ipv6": {"local": "", "remote": "", "subnet": ""},
+                "ipv4": {
+                    "local": "10.10.10.10",
+                    "remote": "10.10.10.10",
+                    "subnet": "10.10.10.10",
+                },
+                "ipv6": {
+                    "local": "10.10.10.10.10.10",
+                    "remote": "10.10.10.10.10.10",
+                    "subnet": "10.10.10.10.10.10",
+                },
             },
             "ethernetInterfaces": [
-                [{"localInterface": "string", "remoteInterface": "string"}]
+                {"localInterface": "string", "remoteInterface": "string"}
+            ],
+            "remoteHost": "",
+        },
+    },
+}
+
+res = {
+    "cpodIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+    "cpodIntentName": "9 digit ISP name",
+    "refSiteIntentName": "9 digit ISP Name",
+    "refSiteIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+    "leafUplink": {
+        "leafA": {
+            "lag": {
+                "ipv4": {
+                    "local": "10.10.10.10",
+                    "remote": "10.10.10.10",
+                    "subnet": "10.10.10.10",
+                },
+                "ipv6": {
+                    "local": "10.10.10.10.10.10",
+                    "remote": "10.10.10.10.10.10",
+                    "subnet": "10.10.10.10.10.10",
+                },
+            },
+            "ethernetInterfaces": [
+                {"localInterface": "string", "remoteInterface": "string"}
+            ],
+            "remoteHost": "",
+        },
+        "leafB": {
+            "lag": {
+                "ipv4": {
+                    "local": "10.10.10.10",
+                    "remote": "10.10.10.10",
+                    "subnet": "10.10.10.10",
+                },
+                "ipv6": {
+                    "local": "10.10.10.10.10.10",
+                    "remote": "10.10.10.10.10.10",
+                    "subnet": "10.10.10.10.10.10",
+                },
+            },
+            "ethernetInterfaces": [
+                {"localInterface": "string", "remoteInterface": "string"}
             ],
             "remoteHost": "",
         },
@@ -37,33 +95,20 @@ ex:
 """
 
 
-class CpodIntent(BaseModel):
-    cpodIntentName: str
-    refSiteIntentName: str
-    refHubName: str
-    refPpodIntentNames: str
-
-
 class EthernetInterfaces(BaseModel):
     localInterface: str
     remoteInterface: str
 
 
-class Ipv4Info(BaseModel):
-    local: str
-    remote: str
-    subnet: str
-
-
-class Ipv6Info(BaseModel):
+class IpvInfo(BaseModel):
     local: str
     remote: str
     subnet: str
 
 
 class Lag(BaseModel):
-    ipv4: Ipv4Info
-    ipv6: Ipv6Info
+    ipv4: IpvInfo
+    ipv6: IpvInfo
 
 
 class Leaf(BaseModel):
@@ -78,8 +123,10 @@ class LeafUplink(BaseModel):
 
 
 class CpodIntentBase(BaseModel):
-    cpodIntent: CpodIntent
-    leafUplink: LeafUplink
+    cpodIntentName: str
+    refSiteIntentName: str
+    siteIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    leafUplink: Optional[LeafUplink] = Field(None)
 
 
 class CpodIntentCreate(CpodIntentBase):
@@ -91,4 +138,4 @@ class CpodIntentUpdate(CpodIntentBase):
 
 
 class CpodIntentInDb(CpodIntentBase):
-    pass
+    cpodIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

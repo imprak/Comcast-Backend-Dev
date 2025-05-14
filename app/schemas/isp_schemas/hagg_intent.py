@@ -1,32 +1,38 @@
-from typing import List
+from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, UUID4
 
 """
 ex:
-{
-    "haggintent": {
-        "haggIntentName": "9 digit ISP name",
-        "refPpodIntentName": "9 digit ISP Name",
-        "refSiteIntentName": "9 digit ISP Name",
-        "refBuhmName": "Philadelphia",
-        "refHubName": "GAL1",
-    },
-    "maggConnections": {
-        "ethernetInterfaces": [
-            {"localInterface": "string", "remoteInterface": "string"}
-        ]
-    },
+req = {
+  "haggIntentName": "9 digit ISP name",
+  "refSiteIntentName": "9 digit ISP Name",
+  "refSiteIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "maggConnections": {
+    "ethernetInterfaces": [
+      {
+        "localInterface": "string",
+        "remoteInterface": "string"
+      }
+    ]
+  }
+}
+
+res = {
+  "haggIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "haggIntentName": "9 digit ISP name",
+  "refSiteIntentName": "9 digit ISP Name",
+  "refSiteIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "maggConnections": {
+    "ethernetInterfaces": [
+      {
+        "localInterface": "string",
+        "remoteInterface": "string"
+      }
+    ]
+  }
 }
 """
-
-
-class HaggIntent(BaseModel):
-    haggIntentName: str
-    refPpodIntentName: str
-    refSiteIntentName: str
-    refBuhmName: str
-    refHubName: str
 
 
 class EthernetInterfaces(BaseModel):
@@ -39,8 +45,10 @@ class MaggConnections(BaseModel):
 
 
 class HaggIntentBase(BaseModel):
-    haggintent: HaggIntent
-    maggConnections: MaggConnections
+    haggIntentName: str
+    refSiteIntentName: str
+    refSiteIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    maggConnections: Optional[MaggConnections] = Field(None)
 
 
 class HaggIntentCreate(HaggIntentBase):
@@ -52,4 +60,4 @@ class HaggIntentUpdate(HaggIntentBase):
 
 
 class HaggIntentinDb(HaggIntentBase):
-    pass
+    haggIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

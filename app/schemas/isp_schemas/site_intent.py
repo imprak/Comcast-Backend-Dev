@@ -1,54 +1,76 @@
+from typing import List, Optional
+
+from pydantic import BaseModel, Field, UUID4
+
 """
 ex:
-{
-  "siteIntent": {
-    "siteIntentName": "9 digit ISP name",
-    "refBuhmName": "Philadelphia",
-    "refHubName": "GAL1",
-    "refCpodIntentNames": "9 digit ISP Name",
-    "refHaggIntentNames": "9 digit ISP Name"
-  },
-  "csvIpOob": "",
+req = {
+  "siteIntentName": "9 digit ISP name",
+  "refHubName": "GAL1",
+  "refHubId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "csvIpOob": "10.10.10.10",
   "ipAllocation": {
-    "comcastRouteable": {
+    "comcastRoutable": {
       "ipv4": [
-        "string"
+        "10.10.10.10"
       ],
       "ipv6": [
-        "string"
+        "10.10.10.10.10.10"
       ]
     },
     "partnerInternal": {
       "ipv4": [
-        "string"
+        "10.10.10.10"
       ],
       "ipv6": [
-        "string"
+        "10.10.10.10.10.10"
       ]
     },
     "internetRouted": {
       "ipv4": [
-        "string"
+        "10.10.10.10"
       ],
       "ipv6": [
-        "string"
+        "10.10.10.10.10.10"
+      ]
+    }
+  }
+}
+
+res = {
+  "siteIntentId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "siteIntentName": "9 digit ISP name",
+  "refHubName": "GAL1",
+  "refHubId": "554aab05-dd7f-44ec-be0c-749eb083505c",
+  "csvIpOob": "10.10.10.10",
+  "ipAllocation": {
+    "comcastRoutable": {
+      "ipv4": [
+        "10.10.10.10"
+      ],
+      "ipv6": [
+        "10.10.10.10.10.10"
+      ]
+    },
+    "partnerInternal": {
+      "ipv4": [
+        "10.10.10.10"
+      ],
+      "ipv6": [
+        "10.10.10.10.10.10"
+      ]
+    },
+    "internetRouted": {
+      "ipv4": [
+        "10.10.10.10"
+      ],
+      "ipv6": [
+        "10.10.10.10.10.10"
       ]
     }
   }
 }
 """
-
-from typing import List
-
-from pydantic import BaseModel, Field
-
-
-class SiteIntent(BaseModel):
-    siteIntentName: str
-    refBuhmName: str
-    refHubName: str
-    refCpodIntentNames: str
-    refHaggIntentNames: str
 
 
 class Ip(BaseModel):
@@ -57,15 +79,17 @@ class Ip(BaseModel):
 
 
 class IpAllocation(BaseModel):
-    comcastRouteable: Ip
+    comcastRoutable: Ip
     partnerInternal: Ip
     internetRouted: Ip
 
 
 class SiteIntentBase(BaseModel):
-    siteIntent: SiteIntent
-    csvIpOob: str = Field(None)
-    ipAllocation: IpAllocation
+    siteIntentName: str
+    refHubName: str
+    refCpodIntentNames: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    csvIpOob: Optional[str] = Field(None)
+    ipAllocation: Optional[IpAllocation] = Field(None)
 
 
 class SiteIntentCreate(SiteIntentBase):
@@ -77,4 +101,4 @@ class SiteIntentUpdate(SiteIntentBase):
 
 
 class SiteIntentInDb(SiteIntentBase):
-    pass
+    siteIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

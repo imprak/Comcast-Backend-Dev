@@ -1,11 +1,17 @@
+from pydantic import BaseModel, Field, UUID4
+
+
 """
 ex:
-{
+req = {
+  "serviceClassName": "East"
+}
+
+res = {
+  "serviceClassId": "554aab05-dd7f-44ec-be0c-749eb083505c",
   "serviceClassName": "East"
 }
 """
-
-from pydantic import BaseModel
 
 
 class ServiceClassBase(BaseModel):
@@ -21,4 +27,4 @@ class ServiceClassUpdate(ServiceClassBase):
 
 
 class ServiceClassInDb(ServiceClassBase):
-    pass
+    serviceClassId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
