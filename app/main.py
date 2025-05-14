@@ -30,6 +30,6 @@ def redirect():
     return RedirectResponse(url="/docs")
 
 
-import uvicorn
-
-uvicorn.run(app)
+# For local test
+# import uvicorn
+# uvicorn.run(app)
