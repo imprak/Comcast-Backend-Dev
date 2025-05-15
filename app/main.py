@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -23,6 +24,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(RequestValidationError)
+async def convert_422_into_400(request, exc: RequestValidationError):
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail={
+            "type": "validation error",
+            "status": "400",
+            "title": "VALIDATION ERROR",
+            "detail": str(exc),
+        },
+    )
 
 
 @app.get("/", include_in_schema=False)

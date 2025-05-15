@@ -7,16 +7,19 @@ security = HTTPBasic()
 
 class Security:
     def __call__(self, credentials: HTTPBasicCredentials = Depends(security)):
-        if credentials.username is None or credentials.password is None:
+        if (
+            not credentials.username
+            or not credentials.password
+            or credentials.username != "admin"
+        ):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Incorrect username or password",
-            )
-
-        if credentials.username != "admin":
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect username or password",
+                detail={
+                    "type": "basic auth",
+                    "status": "403",
+                    "title": "AUTHORIZATION ERROR",
+                    "detail": "Incorrect username or password",
+                },
             )
 
         return credentials.username
