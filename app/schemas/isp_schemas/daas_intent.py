@@ -60,4 +60,4 @@ class DaasIntentUpdate(DaasIntentBase):
 
 
 class DaasIntentInDb(DaasIntentBase):
-    daasIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    daasIntentId: UUID4 | str = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

@@ -1,4 +1,6 @@
-from fastapi import Depends, status, Path
+from typing import Optional
+
+from fastapi import Depends, status, Path, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRouter
@@ -21,19 +23,21 @@ def create_activate_field_rpd(
     data_in: schemas.ActivateFieldRpdCreate,
     partner_id: str = Path(..., title="Partner ID", alias="partnerId"),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> JSONResponse:
     log.info(
         f"Received a create activate field rpd request from {username} "
         f"with partner id {partner_id}"
     )
 
+    data_out = schemas.ActivateFieldRpdInDb(
+        **data_in.model_dump(),
+        **{"activateFieldRpdId": "554aab05-dd7f-44ec-be0c-749eb083505c"},
+    )
+
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
-        content={
-            "code": 201,
-            "status": "OK",
-            "message": jsonable_encoder(data_in),
-        },
+        content=jsonable_encoder(data_out),
     )
 
 
@@ -48,19 +52,21 @@ def update_activate_field_rpd(
         ..., title="activateFieldRpd ID", alias="activateFieldRpdId"
     ),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> JSONResponse:
     log.info(
         f"Received a update activate field rpd request from {username} with partner "
         f"id {partner_id} and activate field rpd id {activate_field_rpd_id}"
     )
 
+    data_out = schemas.ActivateFieldRpdInDb(
+        **data_in.model_dump(),
+        **{"activateFieldRpdId": activate_field_rpd_id},
+    )
+
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED,
-        content={
-            "code": 201,
-            "status": "OK",
-            "message": jsonable_encoder(data_in),
-        },
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder(data_out),
     )
 
 
@@ -74,6 +80,7 @@ def delete_activate_field_rpd(
         ..., title="activateFieldRpd ID", alias="activateFieldRpdId"
     ),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> int:
     log.info(
         f"Received a delete activate field rpd request from {username} with partner "
@@ -93,19 +100,21 @@ def create_activate_shelf_rpd(
     data_in: schemas.ActivateShelfRpdCreate,
     partner_id: str = Path(..., title="Partner ID", alias="partnerId"),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> JSONResponse:
     log.info(
         f"Received a create activate shelf rpd request from {username} "
         f"with partner id {partner_id}"
     )
 
+    data_out = schemas.ActivateShelfRpdInDb(
+        **data_in.model_dump(),
+        **{"activateShelfRpdId": "554aab05-dd7f-44ec-be0c-749eb083505c"},
+    )
+
     return JSONResponse(
         status_code=status.HTTP_201_CREATED,
-        content={
-            "code": 201,
-            "status": "OK",
-            "message": jsonable_encoder(data_in),
-        },
+        content=jsonable_encoder(data_out),
     )
 
 
@@ -120,19 +129,21 @@ def update_activate_shelf_rpd(
         ..., title="activateShelfRpd ID", alias="activateShelfRpdId"
     ),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> JSONResponse:
     log.info(
         f"Received a update activate shelf rpd request from {username} with partner "
         f"id {partner_id} and activate shelf rpd id {activate_shelf_rpd_id}"
     )
 
+    data_out = schemas.ActivateShelfRpdInDb(
+        **data_in.model_dump(),
+        **{"activateShelfRpdId": activate_shelf_rpd_id},
+    )
+
     return JSONResponse(
-        status_code=status.HTTP_201_CREATED,
-        content={
-            "code": 201,
-            "status": "OK",
-            "message": jsonable_encoder(data_in),
-        },
+        status_code=status.HTTP_200_OK,
+        content=jsonable_encoder(data_out),
     )
 
 
@@ -146,6 +157,7 @@ def delete_activate_shelf_rpd(
         ..., title="activateShelfRpd ID", alias="activateShelfRpdId"
     ),
     username: str = Depends(security.Security()),
+    client_id: Optional[str] = Query(None, alias="clientId"),
 ) -> int:
     log.info(
         f"Received a delete activate shelf rpd request from {username} with partner "

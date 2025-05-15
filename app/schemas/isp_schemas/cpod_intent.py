@@ -138,4 +138,4 @@ class CpodIntentUpdate(CpodIntentBase):
 
 
 class CpodIntentInDb(CpodIntentBase):
-    cpodIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    cpodIntentId: UUID4 | str = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

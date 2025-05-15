@@ -99,4 +99,6 @@ class ActivateShelfRpdUpdate(ActivateShelfRpdBase):
 
 
 class ActivateShelfRpdInDb(ActivateShelfRpdBase):
-    activateShelfRpdId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    activateShelfRpdId: UUID4 | str = Field(
+        examples=["554aab05-dd7f-44ec-be0c-749eb083505c"]
+    )

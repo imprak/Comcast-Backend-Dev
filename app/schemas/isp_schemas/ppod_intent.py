@@ -379,7 +379,7 @@ class PpodIntentUpdate(PpodIntentBase):
 
 
 class PpodIntentInDb(PpodIntentBase):
-    cpodIntentId: Optional[UUID4] = Field(
+    cpodIntentId: Optional[UUID4 | str] = Field(
         None, examples=["554aab05-dd7f-44ec-be0c-749eb083505c"]
     )
-    ppodIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    ppodIntentId: UUID4 | str = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

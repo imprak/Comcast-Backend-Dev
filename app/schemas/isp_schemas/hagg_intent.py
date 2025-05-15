@@ -60,4 +60,4 @@ class HaggIntentUpdate(HaggIntentBase):
 
 
 class HaggIntentinDb(HaggIntentBase):
-    haggIntentId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    haggIntentId: UUID4 | str = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])

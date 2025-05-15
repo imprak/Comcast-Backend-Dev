@@ -67,4 +67,4 @@ class ScnProfileUpdate(ScnProfileBase):
 
 
 class ScnProfileInDb(ScnProfileBase):
-    scnProfileId: UUID4 = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
+    scnProfileId: UUID4 | str = Field(examples=["554aab05-dd7f-44ec-be0c-749eb083505c"])
